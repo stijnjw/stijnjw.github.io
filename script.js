@@ -10,10 +10,35 @@ function openTable(table){
     return newtable
 }
 
+function getdbString(table){
+    let newtable = []
+    for (const property in table) {
+        newtable.push(table[property])
+        console.log(`${property}: ${table[property]}`);
+        console.log(newtable)
+    }
+    return newtable;
+}
+
+var stringToColour = function(str) {
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    var colour = '#';
+    for (var i = 0; i < 3; i++) {
+      var value = (hash >> (i * 8)) & 0xFF;
+      colour += ('00' + value.toString(16)).substr(-2);
+    }
+    return colour;
+}
+
 function getTextForId(element, table){
     let id = element.id
     if (!table[id]) return `LEEG`;
+    console.log(table[id])
 
+    element.style.backgroundColor = stringToColour(table[id]['name']);
     let returnstring = ''
 
     for (const property in table[id]) {
@@ -87,6 +112,8 @@ function doSelectType(){
     } else if (document.getElementById('welkeactie').selectedIndex == 2) {
         // we gaan iets verwijderen
         console.log('verwijderen')
+    
+        document.getElementById('extrainput').innerHTML = '<input id="lebuttom4" type="button" onclick="deleteSlot()" value="Verwijder deze slot"><br>';
     }
 }
 
@@ -104,7 +131,7 @@ function doAddItem(){
     if (!type) return alert('Verplicht attribuut TYPE mist.');
     if (!name) return alert('Verplicht attribuut NAME mist.');
     if (!amount) return alert('Verplicht attribuut AMOUNT mist.');
-    if (isNaN(Number(amount))) return alert('Attribuut SLOT moet een nummer zijn.');
+    if (isNaN(Number(amount))) return alert('Attribuut AMOUNT moet een nummer zijn.');
     if (!info) {info = []} else {info = JSON.parse(info)};
 
     let table = {
@@ -115,11 +142,37 @@ function doAddItem(){
         info,
     }
 
-    console.log(table);
+    //console.log(table);
 
     inh[slot] = table
 
-    document.getElementById('RESULT').innerHTML = 'Nieuwe string:<br>' + JSON.stringify(inh);
+    document.getElementById('RESULT').innerHTML = 'Nieuwe string:<br>' + JSON.stringify(getdbString(inh))//JSON.stringify(inh);
+
+    let tableelement = document.getElementById("table");
+    tableelement.innerHTML = ''
+
+    let newtable = inh
+
+    for (let i = 0; i < 6; i++) {
+        let row = tableelement.insertRow();
+        let cell1 = row.insertCell(0); cell1.id = i*5+1
+        let cell2 = row.insertCell(1); cell2.id = i*5+2
+        let cell3 = row.insertCell(2); cell3.id = i*5+3
+        let cell4 = row.insertCell(3); cell4.id = i*5+4
+        let cell5 = row.insertCell(4); cell5.id = i*5+5
+        
+        cell1.innerHTML = getTextForId(cell1, newtable);
+        cell2.innerHTML = getTextForId(cell2, newtable);
+        cell3.innerHTML = getTextForId(cell3, newtable);
+        cell4.innerHTML = getTextForId(cell4, newtable);
+        cell5.innerHTML = getTextForId(cell5, newtable);
+
+        cell1.style.border = '1px solid black'; cell1.style.padding = '8px';
+        cell2.style.border = '1px solid black'; cell2.style.padding = '8px';
+        cell3.style.border = '1px solid black'; cell3.style.padding = '8px';
+        cell4.style.border = '1px solid black'; cell4.style.padding = '8px';
+        cell5.style.border = '1px solid black'; cell5.style.padding = '8px';
+    }
 }
 
 function chooseSlot(){
@@ -171,7 +224,7 @@ function doChangeItem(){
 
     inh[slot] = table
 
-    document.getElementById('RESULT').innerHTML = 'Nieuwe string:<br>' + JSON.stringify(inh);
+    document.getElementById('RESULT').innerHTML = 'Nieuwe string:<br>' + JSON.stringify(getdbString(inh))//JSON.stringify(inh);
 
     let tableelement = document.getElementById("table");
     tableelement.innerHTML = ''
@@ -198,6 +251,48 @@ function doChangeItem(){
         cell4.style.border = '1px solid black'; cell4.style.padding = '8px';
         cell5.style.border = '1px solid black'; cell5.style.padding = '8px';
     }
+}
+
+function deleteSlot(){
+    let slot = document.getElementById('welkeslot').value
+
+    if (!slot) return alert('Verplicht attribuut SLOT mist.');
+    if (isNaN(Number(slot))) return alert('Attribuut SLOT moet een nummer zijn.');
+    if (slot < 1 || slot > 30) return alert('Attribuut SLOT moet tussen 1 en 30 liggen.');
+    if (!inh[slot]) return alert('Attribuut SLOT bestaat niet en kan daarmee niet verwijderd worden.');
+
+    //let removeIndex = inh.indexOf(slot)
+    delete inh[slot];
+    //inh[slot] = null;
+
+    document.getElementById('RESULT').innerHTML = 'Nieuwe string:<br>' + JSON.stringify(getdbString(inh))//JSON.stringify(inh);
+    
+    let tableelement = document.getElementById("table");
+    tableelement.innerHTML = ''
+
+    let newtable = inh
+
+    for (let i = 0; i < 6; i++) {
+        let row = tableelement.insertRow();
+        let cell1 = row.insertCell(0); cell1.id = i*5+1
+        let cell2 = row.insertCell(1); cell2.id = i*5+2
+        let cell3 = row.insertCell(2); cell3.id = i*5+3
+        let cell4 = row.insertCell(3); cell4.id = i*5+4
+        let cell5 = row.insertCell(4); cell5.id = i*5+5
+        
+        cell1.innerHTML = getTextForId(cell1, newtable);
+        cell2.innerHTML = getTextForId(cell2, newtable);
+        cell3.innerHTML = getTextForId(cell3, newtable);
+        cell4.innerHTML = getTextForId(cell4, newtable);
+        cell5.innerHTML = getTextForId(cell5, newtable);
+
+        cell1.style.border = '1px solid black'; cell1.style.padding = '8px';
+        cell2.style.border = '1px solid black'; cell2.style.padding = '8px';
+        cell3.style.border = '1px solid black'; cell3.style.padding = '8px';
+        cell4.style.border = '1px solid black'; cell4.style.padding = '8px';
+        cell5.style.border = '1px solid black'; cell5.style.padding = '8px';
+    }
+
 }
 
 function restart(){
