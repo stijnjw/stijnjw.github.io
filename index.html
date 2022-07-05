@@ -4,19 +4,86 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
 	<head>
         <!-- Website titel en icoon -->
-		<title>Stijnjw</title> <!-- titel tablad -->
+		<title>Inv visualise - Stijnjw</title> <!-- titel tablad -->
          <!-- <link rel="icon" href="logo.jpeg" type="image/jpg">icoon tablad -->
 
         <!-- relations -->
 		<link rel="stylesheet" href="style.css"> <!-- css -->
-		<link rel="script" href="script.js"> <!-- js -->
-        <script src="https://kit.fontawesome.com/4a2103da53.js" crossorigin="anonymous"></script> <!-- fontawesome link -->
-        <link rel="preconnect" href="https://fonts.googleapis.com"> <!-- google font zooi -->
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <!-- google font zooi -->
-        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;300&display=swap" rel="stylesheet">  <!-- google font zooi -->
 	</head>
 	
 	<body>
-        <h1 id="demo">a</h1>
+        <i id="show"></i>
+        Inventory string: <input type="text" name="fname" id="vraag" >
+        <input type="button" onclick="handleRequest()" value="Submit"><br><br>
+
+        <table id="table">
+
+        </table>
+
+        <script>
+            //let string = '[{"name":"water","amount":5,"info":[],"type":"item","slot":2},{"name":"sandwich","amount":5,"info":[],"type":"item","slot":3},{"name":"lockpick","amount":2,"info":[],"type":"item","slot":4},{"name":"id-card","amount":1,"info":{"firstname":"Voornaam","gender":1,"nationality":"Nationaliteit","birthdate":"5678-12-31","lastname":"Achternaam","citizenid":"FWK99710"},"type":"item","slot":5},{"name":"phone","amount":1,"info":[],"type":"item","slot":6}]'
+            
+            
+            function openTable(table){
+                let newtable = {}
+                for (const property in table) {
+                    newtable[table[property]['slot']] = table[property]
+                }
+                console.log(newtable)
+                return newtable
+            }
+
+            function getTextForId(element, table){
+                let id = element.id
+                if (!table[id]) return `LEEG`;
+
+                let returnstring = ''
+
+                for (const property in table[id]) {
+                    if (property == 'info') {
+                        if (Object.keys(table[id][property])[0]) {
+                            returnstring += `info:<br>`
+                            for (const propertya in table[id][property]) {
+                                returnstring += `&nbsp;&nbsp;&nbsp;${propertya}: ${table[id][property][propertya]}<br>`
+                            }
+                        }
+                    } else {
+                        returnstring += `${property}: ${table[id][property]}<br>`
+                    }
+                }
+                console.log(returnstring)
+                return returnstring;
+            }
+
+            function handleRequest(){
+                let string = document.getElementById('vraag').value
+                let parsed = JSON.parse(string)
+                console.log(parsed)
+                let newtable = openTable(parsed)
+
+                let tableelement = document.getElementById("table");
+
+                for (let i = 0; i < 6; i++) {
+                    let row = tableelement.insertRow();
+                    let cell1 = row.insertCell(0); cell1.id = i*5+1
+                    let cell2 = row.insertCell(1); cell2.id = i*5+2
+                    let cell3 = row.insertCell(2); cell3.id = i*5+3
+                    let cell4 = row.insertCell(3); cell4.id = i*5+4
+                    let cell5 = row.insertCell(4); cell5.id = i*5+5
+                    
+                    cell1.innerHTML = getTextForId(cell1, newtable);
+                    cell2.innerHTML = getTextForId(cell2, newtable);
+                    cell3.innerHTML = getTextForId(cell3, newtable);
+                    cell4.innerHTML = getTextForId(cell4, newtable);
+                    cell5.innerHTML = getTextForId(cell5, newtable);
+
+                    cell1.style.border = '1px solid black'; cell1.style.padding = '8px';
+                    cell2.style.border = '1px solid black'; cell2.style.padding = '8px';
+                    cell3.style.border = '1px solid black'; cell3.style.padding = '8px';
+                    cell4.style.border = '1px solid black'; cell4.style.padding = '8px';
+                    cell5.style.border = '1px solid black'; cell5.style.padding = '8px';
+                }
+            }
+        </script>
 	</body>
 </html>
