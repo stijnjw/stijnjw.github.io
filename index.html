@@ -29,6 +29,7 @@
                 for (const property in table) {
                     newtable[table[property]['slot']] = table[property]
                 }
+                console.log(newtable)
                 return newtable
             }
 
@@ -56,6 +57,7 @@
             function handleRequest(){
                 let string = document.getElementById('vraag').value
                 let parsed = JSON.parse(string)
+                //console.log(parsed)
                 let newtable = openTable(parsed)
 
                 let tableelement = document.getElementById("table");
