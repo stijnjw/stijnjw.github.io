@@ -21,7 +21,11 @@ function getTextForId(element, table){
             if (Object.keys(table[id][property])[0]) {
                 returnstring += `info:<br>`
                 for (const propertya in table[id][property]) {
-                    returnstring += `&nbsp;&nbsp;&nbsp;${propertya}: ${table[id][property][propertya]}<br>`
+                    if (typeof table[id][property][propertya] == 'object') {
+                        returnstring += `&nbsp;&nbsp;&nbsp;${propertya}: [Object] (zie console via f12)<br>`
+                    } else {
+                        returnstring += `&nbsp;&nbsp;&nbsp;${propertya}: ${table[id][property][propertya]}<br>`
+                    }
                 }
             }
         } else {
@@ -136,7 +140,7 @@ function chooseSlot(){
     document.getElementById('itemtype').value = type
     document.getElementById('itemname').value = name
     document.getElementById('itemamount').value = amount
-    document.getElementById('iteminfo').value = info
+    document.getElementById('iteminfo').value = JSON.stringify(info)
 }
 
 function doChangeItem(){
