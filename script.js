@@ -131,7 +131,8 @@ function doAddItem(){
 
     inh[slot] = table
 
-    document.getElementById('RESULT').innerHTML = 'Nieuwe string:<br>' + JSON.stringify(getdbString(inh))//JSON.stringify(inh);
+    document.getElementById('RESULT').innerHTML = 'Nieuwe string:<br>' + JSON.stringify(getdbString(inh)) + '<br><input id="cpybtn" type="button" onclick="copydbString()" value="String kopieren"><br>'//JSON.stringify(inh);
+    navigator.clipboard.writeText('agbfyuewghfbewhbfewhuifhuiwehui')
 
     let tableelement = document.getElementById("table");
     tableelement.innerHTML = ''
@@ -207,7 +208,7 @@ function doChangeItem(){
 
     inh[slot] = table
 
-    document.getElementById('RESULT').innerHTML = 'Nieuwe string:<br>' + JSON.stringify(getdbString(inh))//JSON.stringify(inh);
+    document.getElementById('RESULT').innerHTML = 'Nieuwe string:<br>' + JSON.stringify(getdbString(inh)) + '<br><input id="cpybtn" type="button" onclick="copydbString()" value="String kopieren"><br>'//JSON.stringify(inh);
 
     let tableelement = document.getElementById("table");
     tableelement.innerHTML = ''
@@ -248,7 +249,7 @@ function deleteSlot(){
     delete inh[slot];
     //inh[slot] = null;
 
-    document.getElementById('RESULT').innerHTML = 'Nieuwe string:<br>' + JSON.stringify(getdbString(inh))//JSON.stringify(inh);
+    document.getElementById('RESULT').innerHTML = 'Nieuwe string:<br>' + JSON.stringify(getdbString(inh)) + '<br><input id="cpybtn" type="button" onclick="copydbString()" value="String kopieren"><br>'//JSON.stringify(inh);
     
     let tableelement = document.getElementById("table");
     tableelement.innerHTML = ''
@@ -280,4 +281,8 @@ function deleteSlot(){
 
 function restart(){
     window.location.reload();
+}
+
+function copydbString(){
+    navigator.clipboard.writeText(JSON.stringify(getdbString(inh)))
 }
