@@ -14,8 +14,6 @@ function getdbString(table){
     let newtable = []
     for (const property in table) {
         newtable.push(table[property])
-        console.log(`${property}: ${table[property]}`);
-        console.log(newtable)
     }
     return newtable;
 }
@@ -36,7 +34,6 @@ var stringToColour = function(str) {
 function getTextForId(element, table){
     let id = element.id
     if (!table[id]) return `LEEG`;
-    console.log(table[id])
 
     element.style.backgroundColor = stringToColour(table[id]['name']);
     let returnstring = ''
@@ -99,20 +96,10 @@ function doSelectType(){
     document.getElementById('welkeactie').disabled = true
     document.getElementById('lebuttom2').disabled = true
     if (document.getElementById('welkeactie').selectedIndex == 0) {
-        // we gaan iets toevoegen
-        console.log('toevoegen')
-
         document.getElementById('nextform').innerHTML = 'type: <input type="text" name="wgefr" id="itemtype"> (bijv. item, weapon) <br>name: <input type="text" name="wgefffffr" id="itemname"> (inspawnnaam) <br>amount: <input type="text" name="wdwgefr" id="itemamount"><br>info: <input type="text" name="wgefawdr" id="iteminfo"> (bijv. {"birthdate":"1980-06-28","firstname":"test","nationality":"nl","lastname":"account","gender":0,"citizenid":"KKR36953","nationality":"DE"})<br><input id="lebuttom3" type="button" onclick="doAddItem()" value="Uitvoeren"><br>';
-        
     } else if (document.getElementById('welkeactie').selectedIndex == 1) {
-        // we gaan iets aanpassen
-        console.log('aanpassen')
-    
         document.getElementById('extrainput').innerHTML = '<input id="lebuttom4" type="button" onclick="chooseSlot()" value="Selecteer dit slot"><br>';
     } else if (document.getElementById('welkeactie').selectedIndex == 2) {
-        // we gaan iets verwijderen
-        console.log('verwijderen')
-    
         document.getElementById('extrainput').innerHTML = '<input id="lebuttom4" type="button" onclick="deleteSlot()" value="Verwijder deze slot"><br>';
     }
 }
@@ -141,8 +128,6 @@ function doAddItem(){
         amount,
         info,
     }
-
-    //console.log(table);
 
     inh[slot] = table
 
@@ -219,8 +204,6 @@ function doChangeItem(){
         amount,
         info,
     }
-
-    console.log(table);
 
     inh[slot] = table
 
